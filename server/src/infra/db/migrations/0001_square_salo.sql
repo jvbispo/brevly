@@ -1,0 +1,1 @@
+ALTER TABLE "shortenedLinks" DROP COLUMN "name";
