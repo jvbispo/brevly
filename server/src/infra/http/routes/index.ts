@@ -1,9 +1,11 @@
-import { createShortenedLink } from "./createShortenedLink";
-import { getShortenedLinks } from "./getShortenedLinks";
+import { createShortenedLinkRoute } from "./createShortenedLink";
+import { deleteShortenedLinksRoute } from "./deleteShortenedLink";
+import { getShortenedLinksRoute } from "./getShortenedLinks";
 
 const routes = {
-    createShortenedLink,
-    getShortenedLinks
+    createShortenedLinkRoute,
+    getShortenedLinksRoute,
+    deleteShortenedLinksRoute
 }
 
 export const routesList = Object.values( routes );

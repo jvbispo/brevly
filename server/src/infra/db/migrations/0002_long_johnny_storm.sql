@@ -1,0 +1,2 @@
+ALTER TABLE "shortenedLinks" ADD COLUMN "accessQuantity" integer DEFAULT 0 NOT NULL;--> statement-breakpoint
+ALTER TABLE "shortenedLinks" ADD CONSTRAINT "shortenedLinks_customAlias_unique" UNIQUE("customAlias");

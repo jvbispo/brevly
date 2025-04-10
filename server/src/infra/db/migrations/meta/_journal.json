@@ -15,6 +15,13 @@
       "when": 1744161332490,
       "tag": "0001_square_salo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744235028202,
+      "tag": "0002_long_johnny_storm",
+      "breakpoints": true
     }
   ]
 }

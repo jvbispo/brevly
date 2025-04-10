@@ -1,20 +1,23 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
+import { createShortenedLink } from "@/app/functions/createShortenedLink";
 
 
-export const createShortenedLink: FastifyPluginAsyncZod = async ( server ) => {
+export const createShortenedLinkRoute: FastifyPluginAsyncZod = async ( server ) => {
     server.post( "/shortened-link",{
         schema: {
             summary: "Create a shortened link",
             tags: [ "link" ],
-            body: {
-                originalUrl: z.string().url(),
-                customAlias: z.string().optional(),
-            }
+            body: z.object( {
+                originalUrl: z.string().url().nonempty(),
+                customAlias: z.string().nonempty(),
+            } )
         }
     }, async ( req, res ) => {
-        // const {  } = req.body;
-        console.log( req );
+        const { originalUrl, customAlias } = req.body;
 
+        const result = await createShortenedLink( { customAlias, originalUrl } )
+
+        res.send( result )
     });
 }
