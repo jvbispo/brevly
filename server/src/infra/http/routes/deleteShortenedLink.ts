@@ -5,7 +5,7 @@ import { z } from "zod";
 
 
 export const deleteShortenedLinksRoute: FastifyPluginAsyncZod = async ( server ) => {
-    server.delete( "/:id/shortened-links",{
+    server.delete( "/:id/shortened-link",{
         schema: {
             summary: "delete selected shortened link",
             tags: [ "link" ],

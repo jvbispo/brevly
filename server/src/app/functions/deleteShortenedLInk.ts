@@ -11,8 +11,10 @@ const deleteShortenedLinkInput = z.object({
 type DeleteShortenedLinkInput = z.input<typeof deleteShortenedLinkInput>;
 
 
-export async function deleteShortenedLink(input: DeleteShortenedLinkInput): Promise<void> {
+export async function deleteShortenedLink(input: DeleteShortenedLinkInput): Promise<{ success: boolean }> {
     const { linkId } = deleteShortenedLinkInput.parse( input );
     
     await db.delete( schema.shortenedLinks).where( eq( schema.shortenedLinks.id, linkId ) );
+
+    return { success: true };
 }

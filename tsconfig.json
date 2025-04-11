@@ -4,7 +4,8 @@
   "_version": "22.0.0",
   "type": "module",
   "compilerOptions": {
-    "lib": ["es2023"],
+    // "lib": ["es2023"],
+    "lib": ["dom", "esnext"],
     "module": "ESNext",
     "target": "ESNext",
     "jsx": "react-jsx",
