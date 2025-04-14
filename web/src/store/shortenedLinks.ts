@@ -2,10 +2,10 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer"
 import { CanceledError } from "axios";
-import { useShallow } from "zustand/react/shallow";
 import { getLinksService } from "../services/getLinks";
 import { createLinksService, type ICreateLinkProps } from "../services/createLink";
 import { deleteLinkService } from "../services/deleteLink";
+import { addAccessToLink } from "../services/addAccessToLink";
 
 export type ShortenedLink = {
     id: string;
@@ -27,10 +27,12 @@ export type ShortenedLink = {
 type ICreateLink = { customAlias: string; originalUrl: string; }
 
 export type LinkState = {
+    loading: boolean;
     shortenedLinks: Map<string, ShortenedLink>;
     getLinks: (  ) => Promise<void>;
     createLink: ( props: ICreateLink ) => Promise<{ success: boolean; shortenedLinkId?: string; }>;
     deleteLink: ( props: { linkId: string; } ) => Promise<{ success: boolean; }>;
+    accessLink: ( props: { customAlias: string; } ) => Promise<{ success: boolean; urlToBeRedirected?: string; }>;
     // addUploads: ( files: File[] ) => void;
     // cancelUpload: ( uploadId: string ) => void;
     // retryUpload: ( uploadId: string ) => void;
@@ -40,9 +42,13 @@ enableMapSet();
 
 export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer( ( set, get ) => {
     async function getLinks () {
+        set( state => { state.loading = true } );
         const response = await getLinksService();
 
-        if( !response.linksArray || !( response.linksArray?.length > 0 ) ) return;
+        if( !response.linksArray || !( response.linksArray?.length > 0 ) ) {
+            set( state => { state.loading = false } );
+            return
+        };
         
         const { linksArray } = response;
 
@@ -53,9 +59,12 @@ export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer(
                 } )
             } )
         }
+
+        set( state => { state.loading = false } );
     }
 
     async function createLink( props: ICreateLinkProps ) {
+        set( state => { state.loading = true } );
         const response = await createLinksService( props );
 
         if( !response.data?.shortenedLink ) return { success: false };
@@ -68,6 +77,7 @@ export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer(
             } )
         } )
 
+        set( state => { state.loading = false } );
         return { shortenedLinkId: shortenedLink.id, success: true }
     }
 
@@ -81,6 +91,34 @@ export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer(
         } )
 
         return { success: true }
+    }
+
+    async function accessLink( { customAlias }: { customAlias: string } ) {
+        set( state => { state.loading = true } );
+        const response = await addAccessToLink( { customAlias } );
+
+        if( !response.data?.success ) {
+            set( state => { state.loading = false } );
+            return { success: false };
+        }
+
+        const { link: linkResult } = response.data;
+        const link = get().shortenedLinks.get( linkResult.id );
+
+        if( !link ) {
+            set( state => { state.loading = false } );
+            return { success: false };
+        }
+
+        set( state => {
+            state.shortenedLinks.set( linkResult.id, {
+                ...link,
+                accessQuantity: linkResult.count,
+            } )
+        } )
+
+        set( state => { state.loading = false } );
+        return { success: true, urlToBeRedirected: link.originalUrl }
     }
     // async function updateUpload( uploadId: string, data: Partial<ShortenedLink> ) {
     //     const upload = get().uploads.get( uploadId );
@@ -197,9 +235,11 @@ export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer(
 
     return {
         shortenedLinks: new Map(),
+        loading: Boolean( false ),
         getLinks,
         createLink,
-        deleteLink
+        deleteLink,
+        accessLink
         // addUploads,
         // cancelUpload,
         // retryUpload

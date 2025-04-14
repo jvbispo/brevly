@@ -48,6 +48,15 @@ module.exports = {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
+		animation: {
+		"bar-loop": "moveBar 1.5s linear infinite",
+		},
+		keyframes: {
+		moveBar: {
+			"0%": { transform: "translateX(-100%)" },
+			"100%": { transform: "translateX(500%)" },
+		},
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

@@ -4,7 +4,8 @@ import { useLinks } from "../../store/shortenedLinks";
 
 export const CreateLinkForm = () => {
     const [ linkData, setLinkData ] = useState<{ originalUrl: string; customAlias: string; }>({ customAlias: "", originalUrl: "" });
-    const { createLink } = useLinks()
+    const { createLink, loading } = useLinks();
+    const [ errors, setErros ] = useState<{ originalUrl: boolean; customAlias: boolean; }>({ customAlias: false, originalUrl: false });
 
     const handleChange = (value: string, field: "originalUrl" | "customAlias") => {
         setLinkData(prev => ({
@@ -40,7 +41,15 @@ export const CreateLinkForm = () => {
             <span className="text-xs text-gray-500 antialiased mb-1.5 mt-4 uppercase">Link Encurtado</span>
             <Input value={linkData.customAlias} onChange={v => handleChange(v.target.value, "customAlias")} />
 
-            <button type="button" onClick={() => handleSubmit()} className="w-100% h-12 bg-bluebase rounded-md cursor-pointer mt-7 text-white">Salvar Link</button>
+            <button
+                type="button"
+                onClick={() => handleSubmit()}
+                data-disabled={loading}
+                className="w-100% h-12 bg-bluebase data-[disabled=true]:bg-gray-500 rounded-md cursor-pointer mt-7 text-white"
+                disabled={loading}
+            >
+                { loading ? "Carregando..." : "Salvar Link" }
+            </button>
         </div>
     )
 }

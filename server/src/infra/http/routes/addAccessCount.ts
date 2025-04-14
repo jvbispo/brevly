@@ -4,7 +4,7 @@ import { addAccessCountToLink } from "@/app/functions/addAccessCountToLink";
 
 
 export const addAccessCountRoute: FastifyPluginAsyncZod = async ( server ) => {
-    server.put( "/:customAlias/access",{
+    server.get( "/:customAlias/access",{
         schema: {
             summary: "add access to shortened link and redirect",
             tags: [ "access" ],
