@@ -1,4 +1,4 @@
-FROM node:20-alpine3.21 AS base
+FROM node:20-alpine3.21-slim AS base
 
 # RUN npm i -g pnpm
 
@@ -20,7 +20,7 @@ COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 RUN npm run build
 RUN npm prune --prod
 
-FROM node:20-alpine3.21 AS deploy
+FROM node:20-alpine3.21-slim AS deploy
 
 USER 1000
 

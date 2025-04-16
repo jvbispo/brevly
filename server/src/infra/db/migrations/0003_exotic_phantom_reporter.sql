@@ -1,0 +1,1 @@
+ALTER TABLE "shortenedLinks" RENAME COLUMN "created_at" TO "createdAt";

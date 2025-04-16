@@ -5,18 +5,18 @@ import { z } from "zod";
 
 
 export const deleteShortenedLinksRoute: FastifyPluginAsyncZod = async ( server ) => {
-    server.delete( "/:id/shortened-link",{
+    server.delete( "/:alias/shortened-link",{
         schema: {
             summary: "delete selected shortened link",
             tags: [ "link" ],
             params: z.object( {
-                id: z.string().uuid().nonempty(),
+                alias: z.string().nonempty(),
             } )
         }
     }, async ( req, res ) => {
-        const { id } = req.params;
+        const { alias } = req.params;
 
-        const result = await deleteShortenedLink( { linkId: id } );
+        const result = await deleteShortenedLink( { alias } );
 
         res.send( result )
     });

@@ -1,13 +1,13 @@
 import axios from "axios";
 
 export interface IDeleteLinkProps {
-    linkId: string;
+    customAlias: string;
 }
 
-export const deleteLinkService = async ( { linkId }: IDeleteLinkProps ) => {
+export const deleteLinkService = async ( { customAlias }: IDeleteLinkProps ) => {
     const result = await axios( {
         method: "delete",
-        url: `http://localhost:3333/${linkId}/shortened-link`,
+        url: `http://localhost:3333/${customAlias}/shortened-link`,
         headers: {
             "Content-Type": "application/json"
         },

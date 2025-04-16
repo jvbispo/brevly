@@ -1,18 +1,25 @@
 import { Copy, Trash2 } from "lucide-react";
 import { useLinks, type ShortenedLink } from "../../store/shortenedLinks";
+import { useAlert } from "../../store/alert";
 import { Link } from "react-router-dom";
 
 export const ShortenedLinkItem = ( { link }: { link: ShortenedLink } ) => {
-    const { deleteLink } = useLinks()
+    const { deleteLink } = useLinks();
+    const { setAlert } = useAlert();
 
     const handleDelete = async () => {
-       await deleteLink( { linkId: link.id } )
+        const confirmed = window.confirm( `Tem certeza que deseja deletar o link '${link.customAlias}'?` );
+        if (confirmed) {
+          // executar ação de deletar
+          deleteLink( { linkId: link.id, customAlias: link.customAlias } );
+        }
+       
     };
 
     const linkUrl = `${import.meta.env.VITE_FRONTEND_URL}/${link.customAlias}`;
 
     return (
-        <div className="flex border-t-2 h-20 items-center justify-between">
+        <div className="flex border-t-2 h-20 min-h-20 items-center justify-between">
             {/* esquerda */}
             <div className="flex flex-col gap-1 overflow-hidden ">
                 <Link to={linkUrl}>
@@ -33,7 +40,11 @@ export const ShortenedLinkItem = ( { link }: { link: ShortenedLink } ) => {
                         onClick={ () => {
                             navigator.clipboard.writeText( linkUrl );
                             
-                            alert( "Link copiado para a área de transferência!" );
+                            setAlert( {
+                                description: `Link ${ link.customAlias } copiado para a área de transferência!`,
+                                title: "Link Copiado",
+                                variant: "success"
+                            } );
                         } }
                     >
                         <Copy className="w-4 h-4" color="#000"/>

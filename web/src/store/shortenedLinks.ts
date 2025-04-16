@@ -31,7 +31,7 @@ export type LinkState = {
     shortenedLinks: Map<string, ShortenedLink>;
     getLinks: (  ) => Promise<void>;
     createLink: ( props: ICreateLink ) => Promise<{ success: boolean; shortenedLinkId?: string; }>;
-    deleteLink: ( props: { linkId: string; } ) => Promise<{ success: boolean; }>;
+    deleteLink: ( props: { linkId: string; customAlias: string; } ) => Promise<{ success: boolean; }>;
     accessLink: ( props: { customAlias: string; } ) => Promise<{ success: boolean; urlToBeRedirected?: string; }>;
     // addUploads: ( files: File[] ) => void;
     // cancelUpload: ( uploadId: string ) => void;
@@ -81,8 +81,8 @@ export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer(
         return { shortenedLinkId: shortenedLink.id, success: true }
     }
 
-    async function deleteLink( { linkId } : { linkId: string; } ) {
-        const response = await deleteLinkService( { linkId } );
+    async function deleteLink( { linkId, customAlias } : { linkId: string; customAlias: string } ) {
+        const response = await deleteLinkService( { customAlias } );
 
         if( !response.data?.success ) return { success: false };
 

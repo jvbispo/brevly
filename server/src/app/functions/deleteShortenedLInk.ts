@@ -5,16 +5,16 @@ import type { IShortenedLink } from "../interfaces/IShortenedLink";
 import { eq } from "drizzle-orm";
 
 const deleteShortenedLinkInput = z.object({
-    linkId: z.string().uuid().nonempty(),
+    alias: z.string().nonempty(),
 });
 
 type DeleteShortenedLinkInput = z.input<typeof deleteShortenedLinkInput>;
 
 
 export async function deleteShortenedLink(input: DeleteShortenedLinkInput): Promise<{ success: boolean }> {
-    const { linkId } = deleteShortenedLinkInput.parse( input );
+    const { alias } = deleteShortenedLinkInput.parse( input );
     
-    await db.delete( schema.shortenedLinks).where( eq( schema.shortenedLinks.id, linkId ) );
+    await db.delete( schema.shortenedLinks).where( eq( schema.shortenedLinks.customAlias, alias ) );
 
     return { success: true };
 }
