@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "@web/components/ui/input";
+import { Input } from "@/components/ui/input";
 // import { ShortenedLinkItem } from "@web/components/links/shortenedLinkItem";
 import { Download } from "lucide-react";
 import LogoWithName from "../assets/icons/LogoWithName.svg";

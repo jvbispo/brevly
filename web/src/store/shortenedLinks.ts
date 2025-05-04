@@ -95,21 +95,24 @@ export const useLinks = create<LinkState, [ [ "zustand/immer", never ] ]>(immer(
 
     async function accessLink( { customAlias }: { customAlias: string } ) {
         set( state => { state.loading = true } );
+        await getLinks();
         const response = await addAccessToLink( { customAlias } );
 
+       
         if( !response.data?.success ) {
             set( state => { state.loading = false } );
             return { success: false };
         }
 
+        
         const { link: linkResult } = response.data;
         const link = get().shortenedLinks.get( linkResult.id );
-
+        console.log( link );
         if( !link ) {
             set( state => { state.loading = false } );
             return { success: false };
         }
-
+        console.log( "response" );
         set( state => {
             state.shortenedLinks.set( linkResult.id, {
                 ...link,

@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { Input } from "@web/components/ui/input";
+import { Input } from "@/components/ui/input";
 // import { ShortenedLinkItem } from "@web/components/links/shortenedLinkItem";
-import { Download } from "lucide-react";
+import { Download, Link, CircleAlert } from "lucide-react";
 import LogoWithName from "../assets/icons/LogoWithName.svg";
 import { ShortenedLinkItem } from "../components/links/shortenedLinkItem";
 import { useLinks } from "../store/shortenedLinks";
 import { CreateLinkForm } from "../components/links/createLinkForm";
-import { Link } from "lucide-react";
+// import { Link } from "lucide-react";
 import { LinksWrapper } from "../components/links/linksWrapper";
 import { Alert, AlertDescription, AlertTitle } from "../components/alert/alert";
-import { CircleAlert } from "lucide-react";
+// import { CircleAlert } from "lucide-react";
 
 export default function Home() {
   const { getLinks, shortenedLinks, loading } = useLinks();

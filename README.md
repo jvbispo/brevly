@@ -22,7 +22,8 @@ This project was developed as part of a postgraduate course to explore backend d
 - [TypeScript](https://www.typescriptlang.org/)
 - [Fastify](https://fastify.dev/)
 - [PostgreSQL](https://www.postgresql.org/) *(or any database of your choice)*
-- [Prisma](https://www.prisma.io/) *(optional, if using ORM)*
+- [Drizzle](https://www.drizzle.com/) *(optional, if using ORM)*
+- [Docker](https://www.docker.com/) 
 
 ---
 
@@ -35,8 +36,20 @@ To run the project locally:
 git clone https://github.com/your-username/brevly.git
 cd brevly
 
-# Install dependencies
-npm install
+# web
+cd web
 
-# Run the development server
-npm run dev
+## Web-  Install dependencies
+pnpm install
+
+## Web - Install dependencies
+pnpm dev
+
+# server
+cd server
+
+## Web-  Install dependencies
+pnpm install
+
+## Web - Install dependencies
+pnpm dev

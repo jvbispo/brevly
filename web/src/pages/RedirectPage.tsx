@@ -1,11 +1,5 @@
-import React, { useEffect } from "react";
-import { Input } from "@web/components/ui/input";
-// import { ShortenedLinkItem } from "@web/components/links/shortenedLinkItem";
-import { Download } from "lucide-react";
-import LogoWithName from "../assets/icons/LogoWithName.svg";
-import { ShortenedLinkItem } from "../components/links/shortenedLinkItem";
+import React, { useEffect, useMemo } from "react";
 import { useLinks } from "../store/shortenedLinks";
-import { CreateLinkForm } from "../components/links/createLinkForm";
 import { useParams } from "react-router-dom";
 import Logo from "../assets/icons/Logo.svg";
 import { Link } from "react-router-dom";
@@ -13,7 +7,7 @@ import NotFound from "../assets/images/404.svg";
 
 
 export default function RedirectPage() {
-    const { accessLink, shortenedLinks, loading } = useLinks();
+    const { accessLink, loading } = useLinks();
     const [ localLoading, setLocalLoading ] = React.useState( true );
     const { slug } = useParams();
 
@@ -30,18 +24,19 @@ export default function RedirectPage() {
                         return;
                     } 
 
-                    setLocalLoading( false );
-                } );
+                    
+                } ).finally( () => setTimeout( () => setLocalLoading( false ), 2000 ) );
             }
         };
         pullData();
     }, [ slug, accessLink ]);
 
-    console.log( loading, localLoading )
-
+   
+    const isLoading = useMemo( () => loading || localLoading, [ loading, localLoading ] );
+    console.log( isLoading );
     return (
         <div className="h-dvh flex items-center justify-center px-4 bg-gray-200 w-screen">
-            {( loading || localLoading ) ? (
+            {( isLoading ) ? (
                 <div className="flex flex-col bg-white rounded-lg items-center pt-12 pb-16 px-20">
                     <img src={Logo} alt="" className="mb-10" width="48px" height="48px" />
 
