@@ -25,6 +25,12 @@ services:
     networks:
       - db
       - widget
+  backend:  # Example backend service
+    image: server:latest
+    # ... other configurations
+    networks:
+      - db  # backend service is on the db network, so it can talk to pg
+    # ... other configurations
 volumes:
   pg:
 networks:

@@ -1,14 +1,14 @@
-FROM node:20-alpine3.21-slim AS base
+FROM node:22 AS base
 
-# RUN npm i -g pnpm
+RUN npm i -g pnpm
 
 FROM base AS dependencies
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN npm install
+RUN pnpm install
 
 FROM base AS build
 
@@ -17,10 +17,11 @@ WORKDIR /usr/src/app
 COPY . .
 COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 
-RUN npm run build
-RUN npm prune --prod
+RUN npm install -g pnpm # Garante que o pnpm esteja disponível para o build
+RUN pnpm build
+RUN pnpm prune --prod
 
-FROM node:20-alpine3.21-slim AS deploy
+FROM node:22 AS deploy
 
 USER 1000
 
