@@ -42,7 +42,7 @@ cd web
 ## Web-  Install dependencies
 pnpm install
 
-## Web - Install dependencies
+## Web - run web project
 pnpm dev
 
 # server
@@ -51,5 +51,5 @@ cd server
 ## Web-  Install dependencies
 pnpm install
 
-## Web - Install dependencies
+## Web - Run server project
 pnpm dev
